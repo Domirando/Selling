@@ -3,46 +3,64 @@ package com.example.selling
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.example.selling.ui.theme.SellingTheme
+import kotlinx.serialization.json.Json
 
+// Inside your Application class or at an appropriate place in your app setup
+val json = Json {
+    isLenient = true
+    ignoreUnknownKeys = true
+    encodeDefaults = true
+    // Add any other configuration you may need
+}
 class MainActivity : ComponentActivity() {
+    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        var item1 = ShopItem("Xoroshiy tovaaar, pokupayteee!!!", "125$", "160$", "50% OFF", "4.3", 160, R.drawable.img, false)
-        var item2 = ShopItem("Ne ploxoy tovaaar, pokupayteee!!!", "135$", "163$", "50% OFF", "4.5", 120, R.drawable.img, true)
-        var item3 = ShopItem("Otlichniy tovaaar, pokupayteee!!!", "115$", "140$", "50% OFF", "4.1", 180, R.drawable.img, false)
-        var items = mutableListOf<ShopItem>()
-        for (i in 1..10){
-            items.add(item1)
-            items.add(item2)
-            items.add(item3)
-        }
-        setContent {
-            SellingTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-
+            setContent {
+                var name = remember {
+                    mutableStateOf(TextFieldValue(""))
+                }
+                var names = mutableListOf<String>()
+//                Nav()
+                Column (modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally){
+                    TextField(value = name.value, onValueChange = { newText ->
+                        name.value = newText
+                    }, label = { Text(text = "Ismingiz:")}, placeholder = { Text(text = "Maftuna")}, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text))
+                    Button(onClick = { names.add(name.value.text) }) {
+                        Text(text = "OK")
+                    }
                     LazyColumn(
                         modifier = Modifier.fillMaxWidth(),
-                        contentPadding = PaddingValues(16.dp)){
-                        items(items) { item ->
-                            Card(item = item)
+                        contentPadding = PaddingValues(16.dp)
+                    ) {
+                        items(names) { name ->
+                            Text(text = name)
                         }
                     }
                 }
             }
-        }
     }
 }

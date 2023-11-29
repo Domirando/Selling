@@ -13,6 +13,21 @@
         android:theme="@style/Theme.Selling"
         tools:targetApi="31">
         <activity
+            android:name=".HomeScreen"
+            android:exported="false"
+            android:label="@string/title_activity_home_screen"
+            android:theme="@style/Theme.Selling" />
+        <activity
+            android:name=".DetailsScreen"
+            android:exported="false"
+            android:label="@string/title_activity_details_screen"
+            android:theme="@style/Theme.Selling" />
+        <activity
+            android:name=".FavouritesScreen"
+            android:exported="false"
+            android:label="@string/title_activity_favourites_screen"
+            android:theme="@style/Theme.Selling" />
+        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
